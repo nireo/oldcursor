@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/ful1e5/apple_cursor",
+  "commit": "fe044a42b4e9cea16ea762d2ed9004f6d7b35543",
+  "archive_sha256": "d3fd3e608fefb90c3cab1317397b054115b1a5495b68fb7886403f837928f329",
+  "files": {
+    "LICENSE": "b506d1619aaec697f71d1230af32190c46777bf541e68f0fa6bf54d48f72c935",
+    "configs/x.build.toml": "a1995c40a5621b3f5eeea016784f0aee0643632fae8bb2a4ef2a5e0b967fd997",
+    "svg/left_ptr.svg": "1ed0122e8247c483374ebb0ab42895a890eebe0fb0c99824e3b56359f40be682",
+    "svg/move.svg": "afd424ac2175a4b1bfd95697a0be7e30681a751d47171db96daa144dc446a6c6",
+    "svg/hand1.svg": "dcb385764c2414870d1216f4c937bb21ff853a0a2e4519cc98913b622b0eb76b",
+    "svg/hand2.svg": "1059f09b64ebe72946523d625fe1c4802ce1523f39c9519fb4620c66972bf5ab",
+    "svg/xterm.svg": "81ccdbbbd3d3b9a65678b37096e2d12b93d7b3cbbfd1719ebb759a2c322c475e"
+  }
+}
