@@ -10,4 +10,4 @@ sh build.sh
 
 Sizes: 16–32 points; default 24. Runs once and exits. SIP stays enabled.
 
-Artwork: [ful1e5/apple_cursor](https://github.com/ful1e5/apple_cursor). GPL-3.0. Uses private macOS APIs; see [security notes](SECURITY-REVIEW.md).
+Artwork: [ful1e5/apple_cursor](https://github.com/ful1e5/apple_cursor). GPL-3.0. Uses private macOS APIs.
