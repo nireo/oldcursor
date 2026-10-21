@@ -140,7 +140,8 @@ Usage: apple-cursor check|apply [--size POINTS] | reset
   apply  Restore defaults, apply the arrow, hands and text I-beam, then exit.
   reset  Ask macOS to restore its built-in cursors, then exit.
 Size is the cursor canvas width, 16–32 points; default 24 (previous size: 32).
-No login item, background process, network access, or elevated privileges.
+No background process, network access, or elevated privileges.
+Optional login startup: sh login.sh [--size POINTS]; remove with sh login.sh --remove.
 """
 
 do {
