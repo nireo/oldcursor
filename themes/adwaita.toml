@@ -1,0 +1,12 @@
+id = "adwaita"
+title = "Adwaita"
+manifest = "upstream/adwaita/manifest.json"
+png_directory = "src/cursors/pngs/96x96"
+xcursor_directory = "Adwaita/cursors"
+
+[cursors]
+arrow = "default"
+closed_hand = "grabbing"
+open_hand = "grab"
+pointing_hand = "pointer"
+ibeam = "text"

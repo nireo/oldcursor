@@ -1,0 +1,24 @@
+{
+  "repository": "https://gitlab.gnome.org/GNOME/adwaita-icon-theme",
+  "version": "51.0",
+  "archive_url": "https://download.gnome.org/sources/adwaita-icon-theme/51/adwaita-icon-theme-51.0.tar.xz",
+  "archive_sha256": "ba561cf3c96305a47179fa5605856ad695c9238ea07f7093aebd9ba80c4e323b",
+  "license": "CC-BY-SA-3.0 (alternatively LGPL-3.0, see COPYING)",
+  "attribution": "GNOME Project — https://www.gnome.org/",
+  "files": {
+    "COPYING": "51f83b2b4e9ed2beebc9b8eed2ecad29314a58ed8c5184b22ad8f9df703d3ce5",
+    "COPYING_CCBYSA3": "207fe75c396c0ae197c57d42c727163428b6667d98cef3644e41c6f1afe1895f",
+    "COPYING_LGPL": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+    "AUTHORS": "4462e7cdc9c2f10f209714179c732c56b07344f02156fa414cb8ddde55537399",
+    "src/cursors/pngs/96x96/default.png": "7cc323602a82521757637cabb1d6752e57882e0f7a9e6cc4e10d8febbb4ae788",
+    "Adwaita/cursors/default": "47f579498d72b12d828aa40e7e484c5ebd6b75ae04293cf5c96532c21c3e1594",
+    "src/cursors/pngs/96x96/grabbing.png": "21ef632248c2b549ffdf308e1156ca3df1f2cb2410852f53833ca1e1b597f554",
+    "Adwaita/cursors/grabbing": "16644498f72f806414180026249a55611a243b7e0646405c23954c861c4fcbd7",
+    "src/cursors/pngs/96x96/grab.png": "1e5162930233d209f8d786d1b6429f9b78df9496a5e7978a1294ebb55d77be6b",
+    "Adwaita/cursors/grab": "ba628c1c32b23171c44b24883f97cdf35da4f41d1e3af7d726f4f019f4284712",
+    "src/cursors/pngs/96x96/pointer.png": "15fe00a2f8304b8e849453caab59d096c6b539ccd72335ab8ef71a02c54f19ee",
+    "Adwaita/cursors/pointer": "3f6fc5b501fd3a27435660805264e25ac39210008baa325003ad1ca9d73266dc",
+    "src/cursors/pngs/96x96/text.png": "36cf958cb176d5be3fb1be3e680ae74554570b64ee48aa9b825707bba83ed1df",
+    "Adwaita/cursors/text": "7ec54ff5b92fdbe65ced307272e839f4ae9a32ab4ea0f139daac781aa44bf05d"
+  }
+}

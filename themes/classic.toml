@@ -1,0 +1,16 @@
+id = "classic"
+title = "Classic"
+manifest = "upstream/manifest.json"
+config = "configs/x.build.toml"
+svg_directory = "svg"
+
+[colors]
+"#00FF00" = "#000000"
+"#0000FF" = "#FFFFFF"
+
+[cursors]
+arrow = "left_ptr"
+closed_hand = "move"
+open_hand = "hand1"
+pointing_hand = "hand2"
+ibeam = "xterm"

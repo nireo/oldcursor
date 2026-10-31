@@ -1,0 +1,18 @@
+id = "inverted"
+title = "Inverted"
+manifest = "upstream/manifest.json"
+config = "configs/x.build.toml"
+svg_directory = "svg"
+
+[colors]
+"#00FF00" = "#FFFFFF"
+"#0000FF" = "#000000"
+white = "#000000"
+black = "#FFFFFF"
+
+[cursors]
+arrow = "left_ptr"
+closed_hand = "move"
+open_hand = "hand1"
+pointing_hand = "hand2"
+ibeam = "xterm"

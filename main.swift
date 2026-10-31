@@ -2,13 +2,28 @@ import AppKit
 import ImageIO
 import UniformTypeIdentifiers
 
-// Artwork.swift is generated from the pinned, locally vendored SVGs.
+// Artwork.swift is generated from pinned, locally vendored artwork.
 struct EmbeddedCursor {
     let name: String
     let identifiers: [String]
     let x: Double
     let y: Double
     let pngs: [String]
+}
+
+struct CursorTheme {
+    let id: String
+    let title: String
+    let artwork: [EmbeddedCursor]
+}
+
+let defaultThemeID = "classic"
+
+func theme(named id: String) throws -> CursorTheme {
+    guard let theme = embeddedThemes.first(where: { $0.id == id }) else {
+        throw Failure("Unknown theme '\(id)'. Available themes: \(embeddedThemes.map(\.id).joined(separator: ", ")).")
+    }
+    return theme
 }
 
 struct PreparedCursor {
@@ -108,7 +123,7 @@ func reset(_ connection: CGSConnectionID) throws {
 
 func apply(_ cursors: [PreparedCursor], _ connection: CGSConnectionID) throws {
     // All artwork has been decoded and validated before the first global mutation.
-    // Clear any previous broader theme before installing the arrow, hands and I-beam.
+    // Clear previous overrides so cursors omitted by this theme use macOS defaults.
     try reset(connection)
     do {
         for cursor in cursors {
@@ -135,13 +150,15 @@ func apply(_ cursors: [PreparedCursor], _ connection: CGSConnectionID) throws {
 }
 
 let usage = """
-Usage: apple-cursor check|apply [--size POINTS] | reset
-  check  Validate every embedded image without changing your cursor.
-  apply  Restore defaults, apply the arrow, hands and text I-beam, then exit.
-  reset  Ask macOS to restore its built-in cursors, then exit.
-Size is the cursor canvas width, 16–32 points; default 24 (previous size: 32).
+Usage: apple-cursor themes | check|apply [--theme ID] [--size POINTS] | check --all-themes [--size POINTS] | reset
+  themes  List bundled themes.
+  check   Validate a theme's images without changing your cursor.
+  apply   Restore defaults, apply the selected theme, then exit.
+  reset   Ask macOS to restore its built-in cursors, then exit.
+Theme defaults to classic. Options may be given in either order.
+Size is the cursor canvas width, 16–32 points; default 24.
 No background process, network access, or elevated privileges.
-Optional login startup: sh login.sh [--size POINTS]; remove with sh login.sh --remove.
+Optional login startup: sh login.sh [--theme ID] [--size POINTS]; remove with sh login.sh --remove.
 """
 
 do {
@@ -150,29 +167,57 @@ do {
         print(usage)
     } else {
         let command = arguments[0]
-        try require(["check", "apply", "reset"].contains(command), usage)
+        try require(["themes", "check", "apply", "reset"].contains(command), usage)
         var pointSize = 24
-        if command != "reset" && arguments.count == 3 && arguments[1] == "--size" {
-            guard let value = Int(arguments[2]) else { throw Failure("Size must be a whole number from 16 to 32 points.") }
-            pointSize = value
-        } else {
-            try require(arguments.count == 1, usage)
+        var themeID = defaultThemeID
+        var options = Set<String>()
+        var index = 1
+        while index < arguments.count {
+            let option = arguments[index]
+            try require(command == "check" || command == "apply", usage)
+            try require(options.insert(option).inserted, "Duplicate option: \(option).")
+            if option == "--all-themes" {
+                try require(command == "check", "--all-themes is only supported by check.")
+                index += 1
+                continue
+            }
+            try require(option == "--size" || option == "--theme", usage)
+            try require(index + 1 < arguments.count, "Missing value for \(option).")
+            let value = arguments[index + 1]
+            if option == "--size" {
+                guard let size = Int(value) else { throw Failure("Size must be a whole number from 16 to 32 points.") }
+                pointSize = size
+            } else {
+                themeID = value
+            }
+            index += 2
         }
+        try require(!options.contains("--all-themes") || !options.contains("--theme"),
+                    "Use either --theme or --all-themes.")
         try require((16...32).contains(pointSize), "Size must be a whole number from 16 to 32 points.")
-        if command == "check" {
-            let cursors = try prepare(embeddedArtwork, pointSize: pointSize)
-            print("Validated \(cursors.count) static cursors, \(cursors.reduce(0) { $0 + $1.identifiers.count }) identifiers, 1x/2x images at \(pointSize) points. No cursor changes.")
+        if command == "themes" {
+            for theme in embeddedThemes {
+                let suffix = theme.id == defaultThemeID ? " (default)" : ""
+                print("\(theme.id)\t\(theme.title)\(suffix)")
+            }
+        } else if command == "check" {
+            let themes = options.contains("--all-themes") ? embeddedThemes : [try theme(named: themeID)]
+            for theme in themes {
+                let cursors = try prepare(theme.artwork, pointSize: pointSize)
+                print("Validated \(theme.id): \(cursors.count) static cursors, \(cursors.reduce(0) { $0 + $1.identifiers.count }) identifiers, 1x/2x images at \(pointSize) points. No cursor changes.")
+            }
         } else {
+            let selectedTheme = command == "apply" ? try theme(named: themeID) : nil
             try require(getuid() != 0 && geteuid() != 0, "Run as your normal desktop user, never with sudo.")
             let major = ProcessInfo.processInfo.operatingSystemVersion.majorVersion
             try require((26...27).contains(major), "This private-API build supports macOS 26–27 only.")
-            let cursors = command == "apply" ? try prepare(embeddedArtwork, pointSize: pointSize) : []
+            let cursors = try selectedTheme.map { try prepare($0.artwork, pointSize: pointSize) } ?? []
             _ = NSApplication.shared.setActivationPolicy(.prohibited)
             let connection = CGSMainConnectionID()
             try require(connection != 0, "No WindowServer connection. Run inside your logged-in graphical session.")
             if command == "apply" {
                 try apply(cursors, connection)
-                print("Applied the arrow, hand and text I-beam cursors at \(pointSize) points; requested macOS defaults for all others.")
+                print("Applied \(themeID) at \(pointSize) points; requested macOS defaults for all other cursors.")
             } else {
                 try reset(connection)
                 print("Requested the macOS default cursors. If a cursor stays cached, log out and back in.")
